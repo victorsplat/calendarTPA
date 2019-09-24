@@ -21,7 +21,10 @@ public class Principal extends javax.swing.JFrame {
 
     private final int[] numDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-    String[][] calendar = new String[7][7];
+    private final int[] dayStart = {2, 5, 5, 1, 3, 6, 1, 4, 0, 2, 5, 0};
+    int mesAtual = 0;
+
+    String[][] calendar = new String[7][5];
 
     private String[] firstDay;
 
@@ -41,13 +44,34 @@ public class Principal extends javax.swing.JFrame {
             comboDay.addItem(days[i]);
         }
     }
-    public void setDays(String month){
-        for(int i = 1; i <=months.length; i++){
-        if(month == months[i]){
-        
+
+    public void setDays(String month) {
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                tableCalendario.setValueAt(null, i, j);
+            }
         }
+        //Setar o Mes atual
+        for (int i = 0; i < numDays.length; i++) {
+            if (months[i] == month) {
+                mesAtual = i;
+            }
+        }
+        int day = 1;
+        for (int row = 0; row < 5; row++) {
+            for (int col = 0; col < 7; col++) {
+                if (day == 1) {
+                    tableCalendario.setValueAt(day, row, dayStart[mesAtual]);
+                    col = dayStart[mesAtual];
+                    day++;
+                } else {
+                    tableCalendario.setValueAt(day, row, col);
+                    day++;
+                }
+            }
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -129,6 +153,11 @@ public class Principal extends javax.swing.JFrame {
         });
 
         jButton1.setText("Envie");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Mês:");
 
@@ -206,6 +235,11 @@ public class Principal extends javax.swing.JFrame {
     private void comboDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboDayActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboDayActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String mes = comboMonth.getSelectedItem().toString();
+        setDays(mes);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
